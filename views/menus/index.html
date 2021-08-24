@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Menus</title>
+</head>
+<body>
+  <h1>All menus</h1>
+  <ul>
+    {{ range . }}
+    <li><a href="/menus/{{ .Id }}">{{ .Name }}</a></li>
+    {{ endx }}
+  </ul>
+</body>
+</html>
