@@ -15,6 +15,12 @@ type Menu struct {
 	Price       int
 }
 
+type Song struct {
+	Id     int
+	Name   string
+	Artist string
+}
+
 var menus = []Menu{
 	{
 		Id:          1,
@@ -33,6 +39,34 @@ var menus = []Menu{
 		Name:        "Jewel Meat",
 		Description: "Incandescent lamp-like radiance that dulls jewels and lights up a night sky",
 		Price:       8000,
+	},
+}
+
+var songs = []Song{
+	{
+		Id:     1,
+		Name:   "Strawberries & Cigarettes",
+		Artist: "Troye Sivan",
+	},
+	{
+		Id:     2,
+		Name:   "Paris in the rain",
+		Artist: "Lauv",
+	},
+	{
+		Id:     3,
+		Name:   "Beside you",
+		Artist: "Keshi",
+	},
+	{
+		Id:     4,
+		Name:   "Best part",
+		Artist: "Daniel Caesar",
+	},
+	{
+		Id:     5,
+		Name:   "Roses",
+		Artist: "Finn Askew",
 	},
 }
 
@@ -59,15 +93,41 @@ func MenusHandler(w http.ResponseWriter, r *http.Request) {
 	menuIndex -= 1
 
 	menuTemplate, err := template.ParseFiles("views/menus/show.html")
-	if err != nil || isOutOfRange(menuIndex) {
+	if err != nil || isOutOfRangeMenus(menuIndex) {
 		http.ServeFile(w, r, "public/500.html")
 		return
 	}
 	menuTemplate.Execute(w, menus[menuIndex])
 }
 
-func isOutOfRange(index int64) bool {
+func isOutOfRangeMenus(index int64) bool {
 	return (index < 0 || index >= int64(len(menus)))
+}
+
+func AllSongsHandler(w http.ResponseWriter, r *http.Request) {
+	songTemplate, err := template.ParseFiles("views/songs/index.html")
+	if err != nil {
+		http.ServeFile(w, r, "public/500.html")
+		return
+	}
+	songTemplate.Execute(w, songs)
+}
+
+func SongsHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	songIndex, _ := strconv.ParseInt(params["id"], 0, 64)
+	songIndex -= 1
+
+	songTemplate, err := template.ParseFiles("views/songs/show.html")
+	if err != nil || isOutOfRangeSongs(songIndex) {
+		http.ServeFile(w, r, "public/500.html")
+		return
+	}
+	songTemplate.Execute(w, menus[songIndex])
+}
+
+func isOutOfRangeSongs(index int64) bool {
+	return (index < 0 || index >= int64(len(songs)))
 }
 
 func main() {
