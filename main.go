@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -16,9 +17,9 @@ type Menu struct {
 }
 
 type Song struct {
-	Id     int
-	Name   string
-	Artist string
+	Id       int
+	Songname string
+	Artist   string
 }
 
 var menus = []Menu{
@@ -44,29 +45,29 @@ var menus = []Menu{
 
 var songs = []Song{
 	{
-		Id:     1,
-		Name:   "Strawberries & Cigarettes",
-		Artist: "Troye Sivan",
+		Id:       1,
+		Songname: "Strawberries & Cigarettes",
+		Artist:   "Troye Sivan",
 	},
 	{
-		Id:     2,
-		Name:   "Paris in the rain",
-		Artist: "Lauv",
+		Id:       2,
+		Songname: "Paris in the rain",
+		Artist:   "Lauv",
 	},
 	{
-		Id:     3,
-		Name:   "Beside you",
-		Artist: "Keshi",
+		Id:       3,
+		Songname: "Beside you",
+		Artist:   "Keshi",
 	},
 	{
-		Id:     4,
-		Name:   "Best part",
-		Artist: "Daniel Caesar",
+		Id:       4,
+		Songname: "Best part",
+		Artist:   "Daniel Caesar",
 	},
 	{
-		Id:     5,
-		Name:   "Roses",
-		Artist: "Finn Askew",
+		Id:       5,
+		Songname: "Roses",
+		Artist:   "Finn Askew",
 	},
 }
 
@@ -106,6 +107,8 @@ func isOutOfRangeMenus(index int64) bool {
 
 func AllSongsHandler(w http.ResponseWriter, r *http.Request) {
 	songTemplate, err := template.ParseFiles("views/songs/index.html")
+	fmt.Printf("%v\n", songTemplate)
+	fmt.Printf("%v\n", err)
 	if err != nil {
 		http.ServeFile(w, r, "public/500.html")
 		return
@@ -123,7 +126,7 @@ func SongsHandler(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "public/500.html")
 		return
 	}
-	songTemplate.Execute(w, menus[songIndex])
+	songTemplate.Execute(w, songs[songIndex])
 }
 
 func isOutOfRangeSongs(index int64) bool {
