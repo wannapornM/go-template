@@ -142,8 +142,9 @@ func main() {
 	// router.HandleFunc("/books", AllBooksHandler)
 	// router.HandleFunc("/books/{id:[0-9]+}", BooksHandler)
 	// or
-	// router.HandleFunc("/songs", AllSongsHandler)
-	// router.HandleFunc("/songs/{id:[0-9]+}", SongsHandler)
+	router.HandleFunc("/songs", AllSongsHandler)
+	router.HandleFunc("/songs/{id:[0-9]+}", SongsHandler)
+
 	router.NotFoundHandler = http.HandlerFunc(NotFound)
 
 	http.Handle("/", router)
